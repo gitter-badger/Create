@@ -29,9 +29,11 @@ function create_scripts() {
 		//Loads the default WordPress comment reply script if needed.
 		wp_enqueue_script('comment-reply');
 	}
-	wp_enqueue_script('modernizr_js', get_template_directory_uri() . '/assets/js/modernizer-2.8.3/modernizr.min.js', array(), null, false);
-	wp_enqueue_script('bootstrap_js', get_template_directory_uri() . '/assets/js/bootstrap-3.2.0/bootstrap.min.js', array(), null, true);
-	wp_enqueue_script('create_js', get_template_directory_uri() . '/assets/js/app.js', array(), null, true);
+
+	// Should not be needed now...
+	// wp_enqueue_script('modernizr_js', get_template_directory_uri() . '/assets/js/modernizer-2.8.3/modernizr.min.js', array(), null, false);
+	// wp_enqueue_script('bootstrap_js', get_template_directory_uri() . '/assets/js/bootstrap-3.2.0/bootstrap.min.js', array(), null, true);
+	wp_enqueue_script('create_js', get_template_directory_uri() . '/assets/js/app.min.js', array(), null, true);
 
 }
 add_action('wp_enqueue_scripts', 'create_scripts', 100);
