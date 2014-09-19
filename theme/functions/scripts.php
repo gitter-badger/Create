@@ -39,6 +39,6 @@ function create_scripts() {
 add_action('wp_enqueue_scripts', 'create_scripts', 100);
 
 function create_admin_scripts() {
-        wp_enqueue_style( 'create_admin_css' , get_template_directory_uri() . 'assets/css/admin.css' );
+        wp_enqueue_style( 'create_admin_css' , get_template_directory_uri() . '/assets/css/admin.css' );
 }
 add_action( 'admin_enqueue_scripts', 'create_admin_scripts' );
