@@ -1,7 +1,7 @@
 {
   "name": "thecreate",
   "version": "1.0.0",
-  "description": "",
+  "description": "R&D platform for creating WordPress themes.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
