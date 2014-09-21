@@ -1,9 +1,17 @@
 module.exports = function(grunt) {
 
+  // Just all the JS files we want added to the app.min.js
+  // files with ! before the path will not be included.
+  // This must be set if you don't want a certain file added.
+  var jsfileList = [
+    'theme/assets/js/bootstrap/*.js',
+    'theme/assets/js/theme/*.js',
+    '!theme/assets/js/theme/wp*.js',
+  ];
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    // Compiles the LESS files into app.min.css
     less: {
       development: {
         options: {
@@ -17,27 +25,14 @@ module.exports = function(grunt) {
       }
     },
 
-    // Concatenates js files into one.
-    // Not used for now...
-    concat: {
-      options: {
-        separator: ';',
-      },
-      app: {
-        src: ['!theme/assets/js/app.js', '!theme/assets/js/**/*.min.js', 'theme/assets/js/**/*.js'],
-        dest: 'theme/assets/js/app.js'
-      }
-    },
-
     uglify: {
       my_target: {
         files: {
-          'theme/assets/js/app.min.js': ['theme/assets/js/bootstrap*/*.js', 'theme/assets/js/modernizr*/*.js', 'theme/assets/js/theme/**/*']
+          'theme/assets/js/app.min.js': jsfileList
         }
       }
     },
 
-    /// FUCK... JSHINT...
     jshint: {
       options: {
         reporter: require('jshint-stylish'),
@@ -48,8 +43,6 @@ module.exports = function(grunt) {
       all: ['Gruntfile.js', 'theme/assets/js/theme/**/*']
     },
 
-    // Cleans all the files so they can be recreated. This is to make sure
-    // that the file is clearly being created and compiled.
     clean: ['theme/assets/js/app.min.js', 'theme/assets/css/app.min.css'],
 
     // Watches all less, js files; runs the tasks.

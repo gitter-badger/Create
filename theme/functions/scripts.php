@@ -33,6 +33,7 @@ function create_scripts() {
 	// Should not be needed now...
 	// wp_enqueue_script('modernizr_js', get_template_directory_uri() . '/assets/js/modernizer-2.8.3/modernizr.min.js', array(), null, false);
 	// wp_enqueue_script('bootstrap_js', get_template_directory_uri() . '/assets/js/bootstrap-3.2.0/bootstrap.min.js', array(), null, true);
+	// wp_enqueue_script('respond_js', get_template_directory_uri() . '/assets/js/respond/latest.js', array(), null, false);
 	wp_enqueue_script('create_js', get_template_directory_uri() . '/assets/js/app.min.js', array(), null, true);
 
 }
