@@ -45,6 +45,20 @@ module.exports = function(grunt) {
       }
     },
 
+    "regex-replace": {
+        foofoo: { //specify a target with any name
+            src: ['theme/assets/less/bootstrap/variables.less'],
+            actions: [
+                {
+                    name: 'bar',
+                    search: '../fonts/',
+                    replace: '../bootstrap/fonts/',
+                    flags: 'g'
+                }
+            ]
+        }
+    },
+
     less: {
       development: {
         options: {
@@ -92,6 +106,7 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-regex-replace');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -99,7 +114,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  grunt.registerTask('migrate', ['copy']);
+  grunt.registerTask('migrate', ['copy', 'regex-replace']);
+  grunt.registerTask('replaceit', ['regex-replace']);
   grunt.registerTask('default', ['clean', 'less', 'jshint', 'uglify']);
 
 };
