@@ -1,11 +1,68 @@
 module.exports = function(grunt) {
 
+<<<<<<< HEAD
   var themeName = "theme";
+=======
+  // Just all the JS files we want added to the app.min.js
+  // files with ! before the path will not be included.
+  // This must be set if you don't want a certain file added.
+  var jsfileList = [
+    'theme/assets/js/bootstrap/*.js',
+    'theme/assets/js/theme/*.js',
+    '!theme/assets/js/theme/wp*.js',
+  ];
+>>>>>>> 13b35ec525ff59e63b0bc636f78cf3878c34d7f4
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    // Compiles the LESS files into app.min.css
+    // copy files and folders form the components folder to the theme folder
+    // staying hip to package management while staying lean and portable
+    // documentation https://github.com/gruntjs/grunt-contrib-copy
+    copy: {
+      main: {
+        files: [
+          //BOOTSTRAP COMPONTENTS
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/bootstrap/less/*.less'], dest: 'theme/assets/less/bootstrap/', filter: 'isFile'},
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/bootstrap/less/mixins/*.less'], dest: 'theme/assets/less/bootstrap/mixins/', filter: 'isFile'},
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/bootstrap/js/*.js'], dest: 'theme/assets/js/bootstrap/', filter: 'isFile'},
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/bootstrap/fonts/**'], dest: 'theme/assets/fonts/bootstrap/', filter: 'isFile'},
+
+          // FONTAWESOME
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/font-awesome/less/*.less'], dest: 'theme/assets/less/fontawesome/', filter: 'isFile'},
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/font-awesome/fonts/**'], dest: 'theme/assets/fonts/fontawesome/', filter: 'isFile'},
+
+          // MODERNIZR JS
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/modernizr/modernizr`.js'], dest: 'theme/assets/js/modernizr/', filter: 'isFile'},
+
+          // RESPOND JS
+          // flattens results to a single level
+          {expand: true, flatten: true, src: ['components/respond/src/respond.js'], dest: 'theme/assets/js/respond/', filter: 'isFile'},
+        ]
+      }
+    },
+
+    "regex-replace": {
+        foofoo: { //specify a target with any name
+            src: ['theme/assets/less/bootstrap/variables.less'],
+            actions: [
+                {
+                    name: 'bar',
+                    search: '../fonts/',
+                    replace: '../bootstrap/fonts/',
+                    flags: 'g'
+                }
+            ]
+        }
+    },
+
     less: {
       development: {
         options: {
@@ -19,26 +76,15 @@ module.exports = function(grunt) {
       }
     },
 
-    // Concatenates js files into one.
-    // Not used for now...
-    concat: {
-      options: {
-        separator: ';',
-      },
-      app: {
-        src: ['!theme/assets/js/app.js', '!theme/assets/js/**/*.min.js', 'theme/assets/js/**/*.js'],
-        dest: 'theme/assets/js/app.js'
-      }
-    },
-
     uglify: {
       my_target: {
         files: {
-          'theme/assets/js/app.min.js': ['theme/assets/js/bootstrap*/*.js', 'theme/assets/js/modernizr*/*.js', 'theme/assets/js/theme/**/*']
+          'theme/assets/js/app.min.js': jsfileList
         }
       }
     },
 
+<<<<<<< HEAD
     // Just testing stuff out...
     ftp_push: {
       my_target: {
@@ -52,6 +98,8 @@ module.exports = function(grunt) {
     },
 
     /// FUCK... JSHINT...
+=======
+>>>>>>> 13b35ec525ff59e63b0bc636f78cf3878c34d7f4
     jshint: {
       options: {
         reporter: require('jshint-stylish'),
@@ -62,8 +110,6 @@ module.exports = function(grunt) {
       all: ['Gruntfile.js', 'theme/assets/js/theme/**/*']
     },
 
-    // Cleans all the files so they can be recreated. This is to make sure
-    // that the file is clearly being created and compiled.
     clean: ['theme/assets/js/app.min.js', 'theme/assets/css/app.min.css'],
 
     // Watches all less, js files; runs the tasks.
@@ -79,6 +125,8 @@ module.exports = function(grunt) {
 
   });
 
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-regex-replace');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -87,6 +135,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-ftp-push');
 
+  grunt.registerTask('migrate', ['copy', 'regex-replace']);
+  grunt.registerTask('replaceit', ['regex-replace']);
   grunt.registerTask('default', ['clean', 'less', 'jshint', 'uglify']);
 
 };
