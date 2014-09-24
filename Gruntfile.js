@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  var themeName = "theme";
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
@@ -33,6 +35,18 @@ module.exports = function(grunt) {
       my_target: {
         files: {
           'theme/assets/js/app.min.js': ['theme/assets/js/bootstrap*/*.js', 'theme/assets/js/modernizr*/*.js', 'theme/assets/js/theme/**/*']
+        }
+      }
+    },
+
+    // Just testing stuff out...
+    ftp_push: {
+      my_target: {
+        options: {
+          username: "",
+          password: "",
+          host: "ftp.bldsvr.com",
+          dest: "/josh/"
         }
       }
     },
@@ -71,6 +85,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-ftp-push');
 
   grunt.registerTask('default', ['clean', 'less', 'jshint', 'uglify']);
 
