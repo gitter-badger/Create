@@ -1,8 +1,5 @@
 module.exports = function(grunt) {
 
-<<<<<<< HEAD
-  var themeName = "theme";
-=======
   // Just all the JS files we want added to the app.min.js
   // files with ! before the path will not be included.
   // This must be set if you don't want a certain file added.
@@ -11,7 +8,6 @@ module.exports = function(grunt) {
     'theme/assets/js/theme/*.js',
     '!theme/assets/js/theme/wp*.js',
   ];
->>>>>>> 13b35ec525ff59e63b0bc636f78cf3878c34d7f4
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -40,7 +36,7 @@ module.exports = function(grunt) {
 
           // MODERNIZR JS
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/modernizr/modernizr`.js'], dest: 'theme/assets/js/modernizr/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/modernizr/modernizr.js'], dest: 'theme/assets/js/modernizr/', filter: 'isFile'},
 
           // RESPOND JS
           // flattens results to a single level
@@ -50,16 +46,27 @@ module.exports = function(grunt) {
     },
 
     "regex-replace": {
-        foofoo: { //specify a target with any name
+        bootstrap: { //specify a target with any name
             src: ['theme/assets/less/bootstrap/variables.less'],
             actions: [
                 {
-                    name: 'bar',
+                    name: 'bootstrap',
                     search: '../fonts/',
                     replace: '../bootstrap/fonts/',
                     flags: 'g'
                 }
             ]
+        },
+        fontawesome: {
+          src: ['theme/assets/less/fontawesome/variables.less'],
+          actions: [
+            {
+              name: 'fontawesome',
+              search: '../fonts',
+              replace: '../fontawesome/fonts/',
+              flags: 'g'
+            }
+          ]
         }
     },
 
@@ -84,22 +91,6 @@ module.exports = function(grunt) {
       }
     },
 
-<<<<<<< HEAD
-    // Just testing stuff out...
-    ftp_push: {
-      my_target: {
-        options: {
-          username: "",
-          password: "",
-          host: "ftp.bldsvr.com",
-          dest: "/josh/"
-        }
-      }
-    },
-
-    /// FUCK... JSHINT...
-=======
->>>>>>> 13b35ec525ff59e63b0bc636f78cf3878c34d7f4
     jshint: {
       options: {
         reporter: require('jshint-stylish'),
