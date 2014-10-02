@@ -3,11 +3,13 @@ module.exports = function(grunt) {
   // Just all the JS files we want added to the app.min.js
   // files with ! before the path will not be included.
   // This must be set if you don't want a certain file added.
-  var jsfileList = [
-    'theme/assets/js/bootstrap/*.js',
-    'theme/assets/js/theme/*.js',
-    '!theme/assets/js/theme/wp*.js',
-  ];
+
+
+  // Dynamic file locations:
+  // <%= pkg.theme %>/<%= pkg.fontsloc %>/
+  // <%= pkg.theme %>/<%= pkg.lessloc %>/
+  // <%= pkg.theme %>/<%= pkg.cssloc %>/
+  // <%= pkg.theme %>/<%= pkg.jsloc %>/
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -20,34 +22,34 @@ module.exports = function(grunt) {
         files: [
           //BOOTSTRAP COMPONTENTS
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/bootstrap/less/*.less'], dest: 'theme/assets/less/bootstrap/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/bootstrap/less/*.less'], dest: '<%= pkg.theme %>/<%= pkg.lessloc %>/bootstrap/', filter: 'isFile'},
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/bootstrap/less/mixins/*.less'], dest: 'theme/assets/less/bootstrap/mixins/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/bootstrap/less/mixins/*.less'], dest: '<%= pkg.theme %>/<%= pkg.lessloc %>/bootstrap/mixins/', filter: 'isFile'},
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/bootstrap/js/*.js'], dest: 'theme/assets/js/bootstrap/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/bootstrap/js/*.js'], dest: '<%= pkg.theme %>/<%= pkg.jsloc %>/bootstrap/', filter: 'isFile'},
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/bootstrap/fonts/**'], dest: 'theme/assets/fonts/bootstrap/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/bootstrap/fonts/**'], dest: '<%= pkg.theme %>/<%= pkg.fontsloc %>/bootstrap/', filter: 'isFile'},
 
           // FONTAWESOME
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/font-awesome/less/*.less'], dest: 'theme/assets/less/fontawesome/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/font-awesome/less/*.less'], dest: '<%= pkg.theme %>/<%= pkg.lessloc %>/fontawesome/', filter: 'isFile'},
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/font-awesome/fonts/**'], dest: 'theme/assets/fonts/fontawesome/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/font-awesome/fonts/**'], dest: '<%= pkg.theme %>/<%= pkg.fontsloc %>/fontawesome/', filter: 'isFile'},
 
           // MODERNIZR JS
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/modernizr/modernizr.js'], dest: 'theme/assets/js/modernizr/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/modernizr/modernizr.js'], dest: '<%= pkg.theme %>/<%= pkg.jsloc %>/modernizr/', filter: 'isFile'},
 
           // RESPOND JS
           // flattens results to a single level
-          {expand: true, flatten: true, src: ['components/respond/src/respond.js'], dest: 'theme/assets/js/respond/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['components/respond/src/respond.js'], dest: '<%= pkg.theme %>/<%= pkg.jsloc %>/respond/', filter: 'isFile'},
         ]
       }
     },
 
     "regex-replace": {
         bootstrap: { //specify a target with any name
-            src: ['theme/assets/less/bootstrap/variables.less'],
+            src: ['<%= pkg.theme %>/<%= pkg.lessloc %>/bootstrap/variables.less'],
             actions: [
                 {
                     name: 'bootstrap',
@@ -58,7 +60,7 @@ module.exports = function(grunt) {
             ]
         },
         fontawesome: {
-          src: ['theme/assets/less/fontawesome/variables.less'],
+          src: ['<%= pkg.theme %>/<%= pkg.lessloc %>/fontawesome/variables.less'],
           actions: [
             {
               name: 'fontawesome',
@@ -73,12 +75,12 @@ module.exports = function(grunt) {
     less: {
       development: {
         options: {
-          paths: ["theme/assets/less"],
+          paths: ["<%= pkg.theme %>/<%= pkg.lessloc %>"],
           compress: true,
           strictImports: true
         },
         files: {
-          "theme/assets/css/app.min.css": "theme/assets/less/app.less"
+          "<%= pkg.theme %>/<%= pkg.cssloc %>/app.min.css": "<%= pkg.theme %>/<%= pkg.lessloc %>/app.less"
         }
       }
     },
@@ -86,7 +88,11 @@ module.exports = function(grunt) {
     uglify: {
       my_target: {
         files: {
-          'theme/assets/js/app.min.js': jsfileList
+          '<%= pkg.theme %>/<%= pkg.jsloc %>/app.min.js': [
+            '<%= pkg.theme %>/<%= pkg.jsloc %>/bootstrap/*.js',
+            '<%= pkg.theme %>/<%= pkg.jsloc %>/theme/*.js',
+            '!<%= pkg.theme %>/<%= pkg.jsloc %>/theme/wp*.js',
+          ]
         }
       }
     },
@@ -98,15 +104,15 @@ module.exports = function(grunt) {
           jQuery: true
         },
       },
-      all: ['Gruntfile.js', 'theme/assets/js/theme/**/*']
+      all: ['Gruntfile.js', '<%= pkg.theme %>/<%= pkg.jsloc %>/theme/**/*']
     },
 
-    clean: ['theme/assets/js/app.min.js', 'theme/assets/css/app.min.css'],
+    clean: ['<%= pkg.theme %>/<%= pkg.jsloc %>/app.min.js', '<%= pkg.theme %>/<%= pkg.cssloc %>/app.min.css'],
 
     // Watches all less, js files; runs the tasks.
     watch: {
       scripts: {
-        files: ["theme/assets/less/**/*", "theme/assets/js/**/*"],
+        files: ["<%= pkg.theme %>/<%= pkg.lessloc %>/**/*", "<%= pkg.theme %>/<%= pkg.jsloc %>/**/*"],
         tasks: ['clean', 'less', 'uglify', 'jshint'],
         options: {
           spawn: false
