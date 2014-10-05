@@ -40,3 +40,4 @@ Icon
 node_modules/
 components/
 theme/sftp-config.json
+bower_components/
