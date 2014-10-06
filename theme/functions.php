@@ -50,6 +50,13 @@ require get_template_directory() . '/functions/jetpack.php';
  */
 require get_template_directory() . '/functions/walker.php';
 
+/**
+ * ACF Setup
+ * 
+ * Uncomment after ACF is installed.
+ */
+// require get_template_directory() . '/functions/acf-setup.php';
+
 //comppile later
 function create_body_container() {
 	echo 'container';
