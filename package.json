@@ -4,7 +4,7 @@
   "description": "R&D platform for creating WordPress themes.",
   "main": "index.js",
   "scripts": {
-    "postinstall": "bower cache clean && bower install && grunt migrate"
+    "postinstall": "gulp comp && gulp replace"
   },
   "repository": {
     "type": "git",
@@ -19,17 +19,33 @@
   "dependencies": {
     "bower": "^1.3.11",
     "coffee-script": "^1.8.0",
+    "del": "^0.1.3",
     "grunt-ftp-push": "^0.2.4",
     "gulp": "^3.8.8",
+    "gulp-bower": "0.0.6",
+    "gulp-changed": "^1.0.0",
     "gulp-concat": "^2.4.1",
+    "gulp-ftp": "^1.0.1",
     "gulp-less": "^1.3.6",
+    "gulp-replace": "^0.4.0",
+    "gulp-replace-task": "^0.1.0",
     "gulp-sourcemaps": "^1.2.4",
     "gulp-uglify": "^1.0.1",
-    "jshint-stylish": "^1.0.0"
+    "gulp-watch": "^1.1.0",
+    "jshint-stylish": "^1.0.0",
+    "run-sequence": "^1.0.1"
   },
-  "theme": "theme",
-  "cssloc": "assets/css",
-  "lessloc": "assets/less",
-  "jsloc": "assets/js",
-  "fontsloc": "assets/fonts"
+  "theme": {
+    "name": "theme",
+    "css": "/assets/css/",
+    "less": "/assets/less/",
+    "js": "/assets/js/",
+    "fonts": "/assets/fonts/"
+  },
+  "ftp": {
+    "host": "ftp.bldsvr.com",
+    "user": "josh@bldsvr.com",
+    "pass": "6eplpSQ@ls-v",
+    "path": "/josh/wp-content/themes/thecreategulp"
+  }
 }
