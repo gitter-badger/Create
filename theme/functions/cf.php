@@ -9,6 +9,7 @@ class Fields {
     }
 
     function init() {
+        
         // Creates the post type
         $labels = array(
             'name' => __( 'Field&nbsp;Groups', 'cf' ),
