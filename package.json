@@ -43,9 +43,9 @@
     "fonts": "/assets/fonts/"
   },
   "ftp": {
-    "host": "ftp.bldsvr.com",
-    "user": "josh@bldsvr.com",
-    "pass": "6eplpSQ@ls-v",
-    "path": "/josh/wp-content/themes/thecreategulp"
+    "host": "",
+    "user": "",
+    "pass": "",
+    "path": ""
   }
 }
