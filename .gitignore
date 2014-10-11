@@ -44,10 +44,10 @@ theme/sftp-config.json'
 # Components
 theme/assets/less/bootstrap/
 theme/assets/less/fontawesome/
-theme/assets/less/app.min.less
+theme/assets/less/app.min.less'
 theme/assets/js/bootstrap/
-theme/assets/js/modernizer/
+theme/assets/js/modernizr/
 theme/assets/js/respond/
-theme/assets/js/app.min.js
+theme/assets/js/app.min.js'
 theme/assets/fonts/bootstrap/
 theme/assets/fonts/fontawesome/
