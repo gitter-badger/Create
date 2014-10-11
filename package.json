@@ -1,5 +1,5 @@
 {
-  "name": "thecreate",
+  "name": "create",
   "version": "1.0.0",
   "description": "R&D platform for creating WordPress themes.",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "url": "https://github.com/FolsomCreative/Create.git"
   },
   "author": "Folsom Creative",
-  "license": "ISC",
+  "license": "GPL",
   "bugs": {
     "url": "https://github.com/FolsomCreative/Create/issues"
   },
