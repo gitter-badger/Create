@@ -50,11 +50,6 @@ require get_template_directory() . '/functions/jetpack.php';
  */
 require get_template_directory() . '/functions/walker.php';
 
-/**
-* Add custom fields
-*/
-require get_template_directory() . '/functions/cf.php';
-
 //comppile later
 function create_body_container() {
 	echo 'container';

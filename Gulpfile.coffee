@@ -42,7 +42,7 @@ gulp.task "copy", ["bower"], ->
   gulp.src "./components/modernizr/modernizr.js"
     .pipe gulp.dest('./theme/assets/js/modernizr/')
   gulp.src "./components/respond/src/respond.js"
-    .pipe gulp.dest('./theme/assets/js/repond/')
+    .pipe gulp.dest('./theme/assets/js/respond/')
 
 gulp.task 'replace', ->
   gulp.src ['./theme/assets/less/bootstrap/variables.less']
