@@ -38,7 +38,7 @@ require get_template_directory() . '/functions/extras.php';
 /**
  * Customizer additions.
  */
-require get_template_directory() . '/functions/customizer.php';
+require get_template_directory() . '/functions/customizer/customizer.php';
 
 /**
  * Load Jetpack compatibility file.

@@ -39,7 +39,7 @@ Icon
 # Project Files
 node_modules/
 components/
-theme/sftp-config.json'
+theme/sftp-config.json
 
 # Components
 theme/assets/less/bootstrap/
