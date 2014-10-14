@@ -10,6 +10,8 @@ uglify          = require "gulp-uglify"
 replace         = require "gulp-replace"
 changed         = require "gulp-changed"
 sourcemaps      = require "gulp-sourcemaps"
+cssmin          = require 'gulp-cssmin'
+rename          = require 'gulp-rename'
 runSequence     = require "run-sequence"
 
 bootstrapLess = "#{pkg.theme.name}#{pkg.theme.less}bootstrap"
@@ -78,6 +80,8 @@ gulp.task 'less', ->
   gulp.src ['./theme/assets/less/app.less', './theme/assets/less/admin.less']
     .pipe sourcemaps.init()
     .pipe less()
+    .pipe cssmin()
+    .pipe rename({suffix: '.min'})
     .pipe gulp.dest('./theme/assets/css')
 
 gulp.task 'watch', ->
