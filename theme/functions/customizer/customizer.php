@@ -25,7 +25,8 @@ function create_customize_register() {
                     $section_id,
                     array(
                         'title' => $data['title'],
-                        'priority' => $data['priority']
+                        'priority' => $data['priority'],
+                        'panel' => 'navbar_options'
                     )
                 );
 
@@ -40,6 +41,23 @@ function create_customize_register() {
     }
 }
 
+function create_customize_panels() {
+    global $wp_customize;
+
+    $wp_customize->add_panel('navbar_options', array(
+        'title' => __('Navbar Options', 'create'),
+        'priority' => 20
+    ));
+
+    if ( ! isset( $wp_customize->get_panel( 'widgets' )->priority ) ) {
+        $wp_customize->add_panel( 'widgets' );
+    }
+
+    $wp_customize->get_panel( 'widgets' )->priority = 500;
+    $wp_customize->get_panel( 'widgets' )->title = __( 'Sidebars & Widgets', 'create' );
+}
+
+add_action('customize_register', 'create_customize_panels');
 add_action('customize_register', 'create_customize_register');
 
 // if(!class_exists('CreateCustomizer')):
