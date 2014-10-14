@@ -12,17 +12,17 @@ changed         = require "gulp-changed"
 sourcemaps      = require "gulp-sourcemaps"
 runSequence     = require "run-sequence"
 
-# bootstrapLess = "#{pkg.theme.name}#{pkg.theme.less}bootstrap"
-# bootstrapJs   = "#{pkg.theme.name}#{pkg.theme.js}bootstrap"
-# bootstrapFont = "#{pkg.theme.name}#{pkg.theme.fonts}bootstrap"
-#
-# fontawesomeLess = "#{pkg.theme.name}#{pkg.theme.less}fontawesome"
-# fontawesomeFont = "#{pkg.theme.name}#{pkg.theme.fonts}fontawesome"
-#
-# lessDir = "#{pkg.theme.name}#{pkg.theme.less}"
-# fontDir = "#{pkg.theme.name}#{pkg.theme.fonts}"
-# cssDir = "#{pkg.theme.name}#{pkg.theme.css}"
-# jsDir = "#{pkg.theme.name}#{pkg.theme.js}"
+bootstrapLess = "#{pkg.theme.name}#{pkg.theme.less}bootstrap"
+bootstrapJs   = "#{pkg.theme.name}#{pkg.theme.js}bootstrap"
+bootstrapFont = "#{pkg.theme.name}#{pkg.theme.fonts}bootstrap"
+
+fontawesomeLess = "#{pkg.theme.name}#{pkg.theme.less}fontawesome"
+fontawesomeFont = "#{pkg.theme.name}#{pkg.theme.fonts}fontawesome"
+
+lessDir = "#{pkg.theme.name}#{pkg.theme.less}"
+fontDir = "#{pkg.theme.name}#{pkg.theme.fonts}"
+cssDir = "#{pkg.theme.name}#{pkg.theme.css}"
+jsDir = "#{pkg.theme.name}#{pkg.theme.js}"
 
 gulp.task "bower", ->
   bower()
@@ -64,17 +64,6 @@ gulp.task "reset", (cb) ->
     "./theme/assets/fonts/fontawesome/"
   ], cb
   return
-
-
-gulp.task 'sync', ->
-  gulp.src './theme/**/**'
-    .pipe changed('./theme/**/**')
-    .pipe ftp(
-      host: pkg.ftp.host
-      user: pkg.ftp.user
-      pass: pkg.ftp.pass
-      remotePath: pkg.ftp.path
-    )
 
 gulp.task 'deploy', ->
   gulp.src './theme/**/**'
