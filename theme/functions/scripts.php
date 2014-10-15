@@ -36,3 +36,11 @@ function create_admin_scripts() {
   //wp_enqueue_style( 'create_admin_css' , get_template_directory_uri() . '/assets/css/admin.css' );
 }
 add_action( 'admin_enqueue_scripts', 'create_admin_scripts' );
+
+function add_conditional_scripts() {
+	echo '<!--[if lt IE 9]>';
+	echo '<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>';
+	echo '<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>';
+	echo '<![endif]-->';
+}
+add_action('wp_head', 'add_conditional_scripts', 101);

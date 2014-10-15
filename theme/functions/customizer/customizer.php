@@ -3,6 +3,8 @@
 if(!class_exists('CreateCustomizer')):
 class CreateCustomizer {
 
+    public $css_maker;
+
     var $path,
         $section_path,
         $panels,
@@ -13,22 +15,34 @@ class CreateCustomizer {
         $this->path = get_template_directory() . '/functions/customizer/';
         $this->section_path = $this->path . 'sections/';
 
+        require_once($path . 'helpers-css.php');
+        $this->css_maker = new CSSMaker;
+        add_action('create_css', array($this->css_maker, 'add_rules'));
+
         // Build the sections details and information here.
         $this->sections = array(
-            'navbar' => array('title' => __('Navbar', 'create'), 'priority' => 35.10, 'path' => $this->section_path),
+            'navbar_colors' => array('title' => __('Navbar Colors', 'create'), 'priority' => 35.10, 'panel' => 'header', 'path' => $this->section_path),
+            'navbar_layout' => array('title' => __('Navbar Layout', 'create'), 'priority' => 35.12, 'panel' => 'header', 'path' => $this->section_path)
         );
 
         // Build the panels details and information here.
         $this->panels = array(
-            ''
+            'general' => array('title' => __('General', 'create'), 'priority' => 5.10),
+            'typography' => array('title' => __('Typography', 'create'), 'priority' => 5.20),
+            'color_scheme' => array('title' => __('Color Scheme', 'create'), 'priority' => 5.30),
+            'header' => array('title' => __('Header', 'create'), 'priority' => 5.40),
+            'content_layout' => array('title' => __('Content & Layout', 'create'), 'priority' => 5.50),
+            'footer' => array('title' => __('Footer', 'create'), 'priority' => 5.60)
         );
 
         // Add methods to customize_register
-        if($this->panel_support()) {
-            add_action('customize_register', array($this, 'add_panels'));
-        }
+        // if($this->panel_support()) {
+        //     add_action('customize_register', array($this, 'add_panels'));
+        // }
 
+        add_action('customize_register', array($this, 'add_panels'));
         add_action('customize_register', array($this, 'add_sections'));
+        add_action('wp_head', array($this, 'display_css'), 11);
     }
 
     function panel_support() {
@@ -37,9 +51,15 @@ class CreateCustomizer {
 
     public function add_panels() {
         global $wp_customize;
-        $panels = array();
+        $panels = $this->panels;
 
         foreach($panels as $panel => $data) {
+            $wp_customize->add_panel($panel,
+                array(
+                    'title' => $data['title'],
+                    'priority' => $data['priority']
+                )
+            );
         }
 
         // Rename and setup the existing panels.
@@ -47,7 +67,8 @@ class CreateCustomizer {
             $wp_customize->add_panel( 'widgets' );
         }
 
-        $wp_customize->get_panel( 'widgets' )->title = __( 'Sidebars & Widgets', 'make' );
+        $wp_customize->get_panel('widgets')->priority = 5.70;
+        $wp_customize->get_panel('widgets')->title = __('Sidebars & Widgets', 'create');
     }
 
     public function add_sections() {
@@ -65,7 +86,8 @@ class CreateCustomizer {
                         $section_id,
                         array(
                             'title' => $data['title'],
-                            'priority' => $data['priority']
+                            'priority' => $data['priority'],
+                            'panel' => $data['panel']
                         )
                     );
 
@@ -73,9 +95,28 @@ class CreateCustomizer {
                 }
             }
         }
+
+        $wp_customize->get_section('title_tagline')->panel = 'general';
+        $wp_customize->get_section('background_image')->panel = 'general';
+        $wp_customize->get_section('static_front_page')->panel = 'general';
+        $wp_customize->get_section('nav')->panel = 'header';
+        $wp_customize->remove_section('colors');
     }
 
     public function add_transport() {}
+
+    public function display_css() {
+        do_action('create_css');
+        $css = $this->css_maker->build();
+
+        if(!empty($css)) {
+            echo '<!-- Create Custom CSS -->';
+            echo '<style type="text/css" id="create-custom-css">';
+            echo $css;
+            echo '</style>';
+            echo '<!-- End Create Custom CSS -->';
+        }
+    }
 
 }
 endif;
