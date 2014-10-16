@@ -104,7 +104,49 @@ function create_customizer_navbar_colors($wp_customize, $section_id) {
 			array(
 				'settings' => $sprefixer . 'link-primary-hover-bg',
 				'section' => $section_id,
-				'label' => __('Link Hover BG Color', 'create'),
+				'label' => __('Link Hover Background', 'create'),
+				'priority' => 30.856
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		$sprefixer . 'link-active',
+		array(
+			'default' => '#555555',
+			'type' => 'theme_mod'
+		)
+	);
+
+	$wp_customize->add_control(
+		new WP_Customize_Color_Control(
+			$wp_customize,
+			$cprefixer . 'link_active',
+			array(
+				'settings' => $sprefixer . 'link-active',
+				'section' => $section_id,
+				'label' => __('Link Active', 'create'),
+				'priority' => 30.856
+			)
+		)
+	);
+
+	$wp_customize->add_setting(
+		$sprefixer . 'link-active-bg',
+		array(
+			'default' => '#e7e7e7',
+			'type' => 'theme_mod'
+		)
+	);
+
+	$wp_customize->add_control(
+		new WP_Customize_Color_Control(
+			$wp_customize,
+			$cprefixer . 'link_active_bg',
+			array(
+				'settings' => $sprefixer . 'link-active-bg',
+				'section' => $section_id,
+				'label' => __('Link Active Background', 'create'),
 				'priority' => 30.856
 			)
 		)

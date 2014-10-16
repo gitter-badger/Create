@@ -131,6 +131,9 @@ class CSSMaker {
         $navbar_link_primary_hover      = get_theme_mod('create_navbar_colors-link-primary-hover');
         $navbar_link_primary_hover_bg   = get_theme_mod('create_navbar_colors-link-primary-hover-bg');
 
+        $navbar_link_active_color       = get_theme_mod('create_navbar_colors-link-active');
+        $navbar_link_active_bg          = get_theme_mod('create_navbar_colors-link-active-bg');
+
         $navbar_bg_color        = get_theme_mod('create_navbar_colors-bg-color');
         $navbar_border_color    = get_theme_mod('create_navbar_colors-border-color');
         $navbar_border_radius   = get_theme_mod('create_navbar_layout-border-radius');
@@ -158,6 +161,14 @@ class CSSMaker {
             'declarations' => array(
                 'color' => $navbar_link_primary_hover,
                 'background-color' => $navbar_link_primary_hover_bg
+            )
+        ));
+
+        $this->add(array(
+            'selectors' => array('.navbar-default .navbar-nav > .active > a'),
+            'declarations' => array(
+                'color' => $navbar_link_active_color,
+                'background-color' => $navbar_link_active_bg
             )
         ));
 
