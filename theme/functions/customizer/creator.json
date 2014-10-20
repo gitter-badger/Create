@@ -1,0 +1,35 @@
+{
+
+    "panels": {
+        "navbar": {
+            "title": "Navbar",
+            "description": "Edit all navbar settings here.",
+            "priority": "auto"
+        }
+    },
+
+    "sections": {
+        "colors": {
+            "title": "Colors",
+            "description": "Navbar color settings.",
+            "priority": "auto",
+            "panel": "navbar"
+        }
+    },
+
+    "settings": {
+        "bg-color": {
+            "default": "#EEE",
+            "type": "theme_mod"
+        }
+    },
+
+    "controls": {
+        "bg-color": {
+            "section": "colors",
+            "type": "color-picker",
+            "setting": "bg-color"
+        }
+    }
+
+}
