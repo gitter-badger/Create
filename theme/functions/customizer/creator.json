@@ -21,6 +21,10 @@
         "bg-color": {
             "default": "#EEE",
             "type": "theme_mod"
+        },
+        "link-color": {
+            "default": "#333",
+            "type": "theme_mod"
         }
     },
 
@@ -28,7 +32,14 @@
         "bg-color": {
             "section": "colors",
             "type": "color-picker",
-            "setting": "bg-color"
+            "setting": "bg-color",
+            "priority": "auto"
+        },
+        "link-color": {
+            "section": "colors",
+            "type": "color-picker",
+            "setting": "link-color",
+            "priority": "auto"
         }
     }
 
