@@ -1,46 +1,79 @@
 {
-
-    "panels": {
-        "navbar": {
-            "title": "Navbar",
-            "description": "Edit all navbar settings here.",
-            "priority": "auto"
-        }
-    },
-
+  "navbar": {
+    "title": "Navbar",
+    "description": "Change all the navbar settings here.",
+    "priority": "5",
     "sections": {
-        "colors": {
-            "title": "Colors",
-            "description": "Navbar color settings.",
-            "priority": "auto",
-            "panel": "navbar"
-        }
-    },
-
-    "settings": {
-        "bg-color": {
+      "colors": {
+        "title": "Colors",
+        "description": "",
+        "priority": "",
+        "settings": {
+          "bg": {
+            "default": "#000",
+            "type": "theme_mod",
+            "control": {
+              "label": "Background",
+              "description": "",
+              "type": "color"
+            }
+          },
+          "link": {
             "default": "#EEE",
-            "type": "theme_mod"
-        },
-        "link-color": {
-            "default": "#333",
-            "type": "theme_mod"
+            "type": "theme_mod",
+            "control": {
+              "label": "Links",
+              "description": "",
+              "type": "color"
+            }
+          }
         }
-    },
-
-    "controls": {
-        "bg-color": {
-            "section": "colors",
-            "type": "color-picker",
-            "setting": "bg-color",
-            "priority": "auto"
-        },
-        "link-color": {
-            "section": "colors",
-            "type": "color-picker",
-            "setting": "link-color",
-            "priority": "auto"
-        }
+      }
     }
+  },
+  
+  "footer": {
+    "title": "Footer",
+    "description": "Change all the footer settings here.",
+    "priority": "6",
+    "sections": {
+      "colors": {
+        "title": "Colors",
+        "description": "",
+        "priority": "",
+        "settings": {
+          "bg": {
+            "default": "#000",
+            "type": "theme_mod",
+            "control": {
+              "label": "Background",
+              "description": "",
+              "type": "text"
+            }
+          }
+        }
+      },
 
+      "layout": {
+        "title": "Layout",
+        "description": "",
+        "priority": "",
+        "settings": {
+          "layout": {
+            "default": "",
+            "type": "theme_mod",
+            "control": {
+              "label": "Layout",
+              "description": "",
+              "type": "select",
+              "choices": {
+                "": "Default",
+                "no-nav": "No Nav"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
