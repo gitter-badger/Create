@@ -76,6 +76,12 @@ gulp.task 'deploy', ->
       remotePath: pkg.ftp.path
     )
 
+gulp.task 'js', ->
+  gulp.src ['./theme/assets/js/theme/*.js']
+    .pipe concat('app.min.js')
+    .pipe uglify()
+    .pipe gulp.dest('./theme/assets/js')
+
 gulp.task 'less', ->
   gulp.src ['./theme/assets/less/app.less', './theme/assets/less/admin.less']
     .pipe sourcemaps.init()
@@ -86,6 +92,7 @@ gulp.task 'less', ->
 
 gulp.task 'watch', ->
   gulp.watch('./theme/assets/less/**/*.less', ['less'])
+  gulp.watch('./theme/assets/js/**/*.js', ['js'])
 
 gulp.task 'comp', ['bower', 'copy']
 gulp.task 'default', ['watch']
