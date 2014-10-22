@@ -183,4 +183,11 @@ function create_get_css() {
 }
 endif;
 
+if(!function_exists('get_mod')):
+function get_mod($panel, $section, $name) {
+
+}
+endif;
+
+add_action('get_mod', 'get_mod');
 add_action('init', 'create_get_css', 1);
