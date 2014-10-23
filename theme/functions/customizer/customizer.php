@@ -4,106 +4,221 @@ if(!class_exists('CreateCustomizer')):
 class CreateCustomizer {
 
     public $css_maker;
-
-    var $path,
-        $section_path,
-        $panels,
-        $sections;
+    public $path;
+    public $creator;
 
     function __construct() {
         // Path setup so we know where we are.
         $this->path = get_template_directory() . '/functions/customizer/';
-        $this->section_path = $this->path . 'sections/';
+        $this->creator = $this->path . 'creator.json';
 
         require_once($path . 'helpers-css.php');
         $this->css_maker = new CSSMaker;
         add_action('create_css', array($this->css_maker, 'add_rules'));
 
-        // Build the sections details and information here.
-        $this->sections = array(
-            'navbar_colors' => array('title' => __('Navbar Colors', 'create'), 'priority' => 35.10, 'panel' => 'header', 'path' => $this->section_path),
-            'navbar_layout' => array('title' => __('Navbar Layout', 'create'), 'priority' => 35.12, 'panel' => 'header', 'path' => $this->section_path)
-        );
-
-        // Build the panels details and information here.
-        $this->panels = array(
-            'general' => array('title' => __('General', 'create'), 'priority' => 5.10),
-            'typography' => array('title' => __('Typography', 'create'), 'priority' => 5.20),
-            'color_scheme' => array('title' => __('Color Scheme', 'create'), 'priority' => 5.30),
-            'header' => array('title' => __('Header', 'create'), 'priority' => 5.40),
-            'content_layout' => array('title' => __('Content & Layout', 'create'), 'priority' => 5.50),
-            'footer' => array('title' => __('Footer', 'create'), 'priority' => 5.60)
-        );
-
-        // Add methods to customize_register
-        // if($this->panel_support()) {
-        //     add_action('customize_register', array($this, 'add_panels'));
-        // }
-
-        add_action('customize_register', array($this, 'add_panels'));
-        add_action('customize_register', array($this, 'add_sections'));
+        add_action('customize_register', array($this, 'the_customizer'));
         add_action('wp_head', array($this, 'display_css'), 11);
+
+        if(is_customize_preview()) {
+            add_action('wp_footer', array($this, 'live_preview_script'), 21);
+        }
     }
 
-    function panel_support() {
-        return ( class_exists( 'WP_Customize_Manager' ) && method_exists( 'WP_Customize_Manager', 'add_panel' ) ) || function_exists( 'wp_validate_boolean' );
-    }
+    public function the_customizer() {
+        global $wp_content;
+        $creator = file_get_contents($this->creator);
+        $panels = json_decode($creator, true);
+        $prefix = 'create_';
 
-    public function add_panels() {
-        global $wp_customize;
-        $panels = $this->panels;
+        foreach ($panels as $panel => $data) {
+            $panel_id = $prefix . $panel;
+            $wp_customize->add_panel($panel_id, array(
+                'title' => $data['title'],
+                'description' => $data['description'],
+                'priority' => $data['priority']
+            ));
 
-        foreach($panels as $panel => $data) {
-            $wp_customize->add_panel($panel,
-                array(
+            $sections = $data['sections'];
+            foreach ($sections as $section => $data) {
+                $section_id = $panel_id . '_' . $section;
+                $wp_customize->add_section($section_id, array(
                     'title' => $data['title'],
-                    'priority' => $data['priority']
-                )
-            );
-        }
+                    'description' => $data['description'],
+                    'priority' => $data['priority'],
+                    'panel' => $panel_id
+                ));
 
-        // Rename and setup the existing panels.
-        if ( ! isset( $wp_customize->get_panel( 'widgets' )->title ) ) {
-            $wp_customize->add_panel( 'widgets' );
-        }
+                $settings = $data['settings'];
+                foreach ($settings as $setting => $data) {
+                    $setting_id = $section_id . '-' . $setting;
 
-        $wp_customize->get_panel('widgets')->priority = 5.70;
-        $wp_customize->get_panel('widgets')->title = __('Sidebars & Widgets', 'create');
-    }
+                    $transport = 'refresh';
+                    if($data['transport']) {
+                        $transport = $data['transport'];
+                    }
 
-    public function add_sections() {
-        global $wp_customize;
-        $sections = $this->sections;
+                    $wp_customize->add_setting($setting_id, array(
+                        'default' => $data['default'],
+                        'type' => $data['type'],
+                        'transport' => $transport
+                    ));
 
-        foreach($sections as $section => $data) {
-            $file = trailingslashit($data['path']) . $section . '.php';
-            if(file_exists($file)) {
-                require_once($file);
-                $section_callback = 'create_customizer_' . $section;
-                if(function_exists($section_callback)) {
-                    $section_id = 'create_' . $section;
-                    $wp_customize->add_section(
-                        $section_id,
-                        array(
-                            'title' => $data['title'],
-                            'priority' => $data['priority'],
-                            'panel' => $data['panel']
-                        )
-                    );
-
-                    call_user_func_array($section_callback, array($wp_customize, $section_id));
+                    $control_id = $section_id . '_' . $setting;
+                    $control = $data['control'];
+                    $this->create_control($control_id, $setting_id, $section_id, $wp_customize);
                 }
             }
         }
-
-        $wp_customize->get_section('title_tagline')->panel = 'general';
-        $wp_customize->get_section('background_image')->panel = 'general';
-        $wp_customize->get_section('static_front_page')->panel = 'general';
-        $wp_customize->get_section('nav')->panel = 'header';
-        $wp_customize->remove_section('colors');
     }
 
-    public function add_transport() {}
+    public function cleanup($wp_customize) {
+        $wp_customize->get_panel('widgets')->priority = 5.70;
+        $wp_customize->get_panel('widgets')->title = __("Sidebars & Widgets", 'create');
+    }
+
+    public function create_control($id, $data, $setting, $section, $wp_customize) {
+        require_once('controls.php');
+        switch($data['type']) {
+
+            default:
+                $wp_customize->add_control($id, array(
+                    'label' => $data['label'],
+                    'settings' => $setting,
+                    'section' => $section,
+                    'priority' => $data['priority']
+                ));
+                break;
+
+            case 'color':
+                $wp_customize->add_control(
+                    new WP_Customize_Color_Control(
+                        $wp_customize,
+                        $id,
+                        array(
+                            'label' => $data['label'],
+                            'settings' => $setting,
+                            'section' => $section,
+                            'priority' => $data['priority']
+                        )
+                    )
+                );
+                break;
+
+            case 'select':
+                $wp_customize->add_control($id, array(
+                    'label' => $data['label'],
+                    'settings' => $setting,
+                    'section' => $section,
+                    'type' => 'select',
+                    'choices' => $data['choices']
+                ));
+                break;
+
+            case 'radio':
+                $wp_customize->add_control($id, array(
+                    'label' => $data['label'],
+                    'settings' => $setting,
+                    'section' => $section,
+                    'type' => 'radio',
+                    'choices' => $data['choices']
+                ));
+                break;
+
+            case 'page-dropdown':
+                $wp_customize->add_control($id, array(
+                    'label' => $data['label'],
+                    'settings' => $setting,
+                    'section' => $section,
+                    'type' => 'page-dropdown'
+                ));
+                break;
+
+            case 'checkbox':
+                $wp_customize->add_control($id, array(
+                    'label' => $data['label'],
+                    'settings' => $setting,
+                    'section' => $section,
+                    'type' => $checkbox
+                ));
+                break;
+
+            case 'number':
+                $wp_customize->add_control(
+                    new Customize_Number_Control(
+                        $wp_customize,
+                        $id,
+                        array(
+                            'label' => $data['label'],
+                            'settings' => $setting,
+                            'section' => $section,
+                            'priority' => $data['priority']
+                        )
+                    )
+                );
+                break;
+
+            case 'image':
+                $wp_customize->add_control(
+                    new Customize_Image_Control(
+                        $wp_customize,
+                        $id,
+                        array(
+                            'label' => $data['label'],
+                            'settings' => $setting,
+                            'section' => $section,
+                            'priority' => $data['priority']
+                        )
+                    )
+                );
+                break;
+
+            case 'textarea':
+                $wp_customize->add_control(
+                    new Customize_TextArea_Control(
+                        $wp_customize,
+                        $id,
+                        array(
+                            'label' => $data['label'],
+                            'settings' => $setting,
+                            'section' => $section,
+                            'priority' => $data['priority']
+                        )
+                    )
+                );
+                break;
+    }
+
+    // public function add_sections() {
+    //     global $wp_customize;
+    //     $sections = $this->sections;
+
+    //     foreach($sections as $section => $data) {
+    //         $file = trailingslashit($data['path']) . $section . '.php';
+    //         if(file_exists($file)) {
+    //             require_once($file);
+    //             $section_callback = 'create_customizer_' . $section;
+    //             if(function_exists($section_callback)) {
+    //                 $section_id = 'create_' . $section;
+    //                 $wp_customize->add_section(
+    //                     $section_id,
+    //                     array(
+    //                         'title' => $data['title'],
+    //                         'priority' => $data['priority'],
+    //                         'panel' => $data['panel']
+    //                     )
+    //                 );
+
+    //                 call_user_func_array($section_callback, array($wp_customize, $section_id));
+    //             }
+    //         }
+    //     }
+
+    //     $wp_customize->get_section('title_tagline')->panel = 'general';
+    //     $wp_customize->get_section('background_image')->panel = 'general';
+    //     $wp_customize->get_section('static_front_page')->panel = 'general';
+    //     $wp_customize->get_section('nav')->panel = 'header';
+    //     $wp_customize->remove_section('colors');
+    // }
 
     public function display_css() {
         do_action('create_css');
@@ -116,6 +231,48 @@ class CreateCustomizer {
             echo '</style>';
             echo '<!-- End Create Custom CSS -->';
         }
+    }
+
+    public function live_preview_script() {
+        $mods = get_theme_mods();
+        $creator = file_get_contents($this->creator);
+        $panels = json_decode($creator, true);
+
+        echo '<script type="text/javascript"> (function($) {';
+        foreach ($mods as $mod => $data) {
+            $name = explode('_', $mod);
+            $name_section = explode('-', trim($name[2]));
+            $n_section = array_slice($name_section, 1);
+            $panel = $name[1];
+            $section = $name_section[0];
+            $setting = implode("-", $n_section);
+
+            $setting_string = "create_{$panel}_{$section}-{$setting}";
+            $setting_array = $panels[$panel]['sections'][$section]['settings'][$setting];
+            if($setting_array) {
+                $css = $setting_array['changes'];
+                if($css) {
+                    $theme_mod = get_theme_mod("create_{$panel}_{$section}-{$setting}");
+                    $selectors = "";
+                    foreach ($css['selectors'] as $selector) {
+                        $selectors .= $selector . ' ';
+                    }
+                    $property = $css['property'];
+
+                    ?>
+
+                    wp.customize('<?php echo $setting_string; ?>', function(value) {
+                        value.bind(function(to) {
+                            $('<?php echo $selectors; ?>').css('<?php echo $css["property"]; ?>', to);
+                        });
+                    });
+
+                    <?
+                }
+
+            }
+        }
+        echo '})(jQuery)</script>';
     }
 
 }

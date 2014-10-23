@@ -5,12 +5,17 @@ class CSSMaker {
     public $data = array();
     public $lend = '';
     public $tab  = '';
+    public $path = '';
+    public $creator = '';
 
     function __construct() {
         if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG === true) {
             $this->lend = "\n";
-            $this->tab  = "\t";   
+            $this->tab  = "\t";
         }
+
+        $this->path = get_template_directory() . '/functions/customizer/';
+        $this->creator = $this->path . 'creator.json';
     }
 
     /**
@@ -126,52 +131,37 @@ class CSSMaker {
         return apply_filters('create_parse_declrarations', $output, $declarations, $tab);
     }
 
+    /**
+     * Adds all custom CSS selectors and declarations to the array.
+     * This is all done dynamically based on creator.json.
+     */
     public function add_rules() {
-        $navbar_link_primary            = get_theme_mod('create_navbar_colors-link-primary');
-        $navbar_link_primary_hover      = get_theme_mod('create_navbar_colors-link-primary-hover');
-        $navbar_link_primary_hover_bg   = get_theme_mod('create_navbar_colors-link-primary-hover-bg');
+        $mods = get_theme_mods();
+        $creator = file_get_contents($this->creator);
+        $panels = json_decode($creator);
 
-        $navbar_link_active_color       = get_theme_mod('create_navbar_colors-link-active');
-        $navbar_link_active_bg          = get_theme_mod('create_navbar_colors-link-active-bg');
+        foreach ($mods as $mod => $data) {
+            $name = explode('_', $mod);
+            $name_setting = explode('-', trim($name[2]));
+            $name_setting_slice = array_slice($name_setting, 1);
+            $panel = $name[1];
+            $section = $name_setting[0];
+            $setting = implode('-', $name_setting_slice);
 
-        $navbar_bg_color        = get_theme_mod('create_navbar_colors-bg-color');
-        $navbar_border_color    = get_theme_mod('create_navbar_colors-border-color');
-        $navbar_border_radius   = get_theme_mod('create_navbar_layout-border-radius');
+            $setting_array = $panels[$panel]['sections'][$section]['settings'][$setting];
+            if($setting_array) {
+                $css = $setting_array['changes'];
+                $theme_mod = get_theme_mod("create_{$panel}_{$section}-{$setting}");
+                $property = $css['property'];
 
-        // Navbar Global
-        $this->add(array(
-            'selectors' => array('.navbar-default'),
-            'declarations' => array(
-                'background-color' => $navbar_bg_color,
-                'border-color' => $navbar_border_color,
-                'border-radius' => $navbar_border_radius
-            )
-        ));
-
-        $this->add(array(
-            'selectors' => array('.navbar-default .navbar-nav > li > a'),
-            'declarations' => array(
-                'color' => $navbar_link_primary
-            )
-        ));
-
-        // Navbar Link Hover Text
-        $this->add(array(
-            'selectors' => array('.navbar-default .navbar-nav > li > a:hover'),
-            'declarations' => array(
-                'color' => $navbar_link_primary_hover,
-                'background-color' => $navbar_link_primary_hover_bg
-            )
-        ));
-
-        $this->add(array(
-            'selectors' => array('.navbar-default .navbar-nav > .active > a'),
-            'declarations' => array(
-                'color' => $navbar_link_active_color,
-                'background-color' => $navbar_link_active_bg
-            )
-        ));
-
+                $this->add(array(
+                    'selectors' => $css['selectors'],
+                    'declarations' => array(
+                        $property => $theme_mod
+                    )
+                ));
+            }
+        }
     }
 
 }
@@ -183,11 +173,4 @@ function create_get_css() {
 }
 endif;
 
-if(!function_exists('get_mod')):
-function get_mod($panel, $section, $name) {
-
-}
-endif;
-
-add_action('get_mod', 'get_mod');
 add_action('init', 'create_get_css', 1);
