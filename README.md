@@ -8,10 +8,10 @@ This project is based on based on Underscores, Bootstrap, and WordPress.
 ##Todo
 
 - [ ] Cleanup Readme
-- [ ] Create a separate dev branch
-- [ ] Explore package management
-- [ ] Explore task runner
-- [ ] Integrate Bootstrap
+- [ X ] Create a separate dev branch
+- [ X ] Explore package management - NPM & Bower
+- [ X ] Explore task runner - Gulp
+- [ X ] Integrate Bootstrap
 - [ ] Decide on menu support
 - [ ] Segment theme functions
 - [ ] Setup Post Format Support

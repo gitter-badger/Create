@@ -40,4 +40,15 @@ Icon
 node_modules/
 components/
 theme/sftp-config.json
-bower_components/
+
+# Components
+theme/assets/less/bootstrap/
+theme/assets/less/fontawesome/
+theme/assets/js/bootstrap/
+theme/assets/js/modernizr/
+theme/assets/js/respond/
+theme/assets/js/app.min.js'
+theme/assets/fonts/bootstrap/
+theme/assets/fonts/fontawesome/
+theme/assets/css/app.min.css'
+>>>>>>> Fresh
