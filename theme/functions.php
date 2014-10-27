@@ -5,58 +5,30 @@
  * @package Create
  */
 
-/**
- * Custom template tags for this theme.
- */ 
+// Setup
 require get_template_directory() . '/functions/setup.php';
 
-/**
- * Custom template tags for this theme.
- */
+// Add scripts
 require get_template_directory() . '/functions/scripts.php';
 
-/**
- * Custom template tags for this theme.
- */
+// Create widget areas
 require get_template_directory() . '/functions/widget-areas.php';
 
-/**
- * Implement the Custom Header feature.
- */
-//require get_template_directory() . '/functions/custom-header.php';
-
-/**
- * Custom template tags for this theme.
- */
+// Custom template tags
 require get_template_directory() . '/functions/template-tags.php';
 
-/**
- * Custom functions that act independently of the theme templates.
- */
+// Extra things
 require get_template_directory() . '/functions/extras.php';
 
-/**
- * Customizer additions.
- */
-require get_template_directory() . '/functions/customizer/customizer.php';
-
-/**
- * Load Jetpack compatibility file.
- */
+// Add jetpack support
 require get_template_directory() . '/functions/jetpack.php';
 
-/**
- * Add custom nav
- */
+// WP Nav Walker for bootstrap
 require get_template_directory() . '/functions/walker.php';
 
-//comppile later
-function create_body_container() {
-	echo 'container';
-}
+// WP Customizer setup
+require get_template_directory() . '/functions/customizer/customizer.php';
 
-//add walker support
-function is_element_empty($element) {
-  $element = trim($element);
-  return !empty($element);
- }
+function create_body_container() {
+    echo 'container';
+}

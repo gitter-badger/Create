@@ -17,6 +17,36 @@ function create_widgets_init() {
 		'after_title'	=> ''
 	));
 
+	register_sidebar(array(
+		'name'			=> __('Footer 2', 'create'),
+		'id'			=> 'footer-2',
+		'description'	=> '',
+		'before_widget' => '',
+		'after_widget'  => '',
+		'before_title'  => '',
+		'after_title'	=> ''
+	));
+
+	register_sidebar(array(
+		'name'			=> __('Footer 3', 'create'),
+		'id'			=> 'footer-3',
+		'description'	=> '',
+		'before_widget' => '',
+		'after_widget'  => '',
+		'before_title'  => '',
+		'after_title'	=> ''
+	));
+
+	register_sidebar(array(
+		'name'			=> __('Footer 4', 'create'),
+		'id'			=> 'footer-4',
+		'description'	=> '',
+		'before_widget' => '',
+		'after_widget'  => '',
+		'before_title'  => '',
+		'after_title'	=> ''
+	));
+
 	register_sidebar( array(
 		'name'          => __( 'Sidebar', 'create' ),
 		'id'            => 'sidebar-1',
