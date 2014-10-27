@@ -19,8 +19,7 @@
                         "control": {
                             "label": "Background",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         },
                         "changes": {
                             "selectors": [".navbar-default"],
@@ -35,8 +34,7 @@
                         "control": {
                             "label": "Link",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         },
                         "changes": {
                             "selectors": [".navbar-default .navbar-nav li > a"],
@@ -51,8 +49,7 @@
                         "control": {
                             "label": "Link Background",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         },
                         "changes": {
                             "selectors": [".navbar-default .navbar-nav li > a"],
@@ -67,8 +64,7 @@
                         "control": {
                             "label": "Link Hover",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         },
                         "changes": {
                             "selectors": [".navbar-default .navbar-nav li > a:hover"],
@@ -83,8 +79,7 @@
                         "control": {
                             "label": "Link Hover Background",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         },
                         "changes": {
                             "selectors": [".navbar-default .navbar-nav li > a:hover"],
@@ -99,8 +94,7 @@
                         "control": {
                             "label": "Link Active",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         },
                         "changes": {
                             "selectors": [".navbar-default .navbar-nav .active > a"],
@@ -115,8 +109,7 @@
                         "control": {
                             "label": "Link Active Background",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         },
                         "changes": {
                             "selectors": [".navbar-default .navbar-nav .active > a"],
@@ -139,8 +132,7 @@
                         "control": {
                             "label": "Logo",
                             "description": "",
-                            "type": "image",
-                            "priority": ""
+                            "type": "image"
                         }
                     },
 
@@ -151,8 +143,7 @@
                         "control": {
                             "label": "Border Radius",
                             "description": "",
-                            "type": "text",
-                            "priority": ""
+                            "type": "text"
                         },
                         "changes": {
                             "selectors": [".navbar"],
@@ -167,7 +158,6 @@
                             "label": "Width",
                             "description": "",
                             "type": "select",
-                            "priority": "",
                             "choices": {
                                 "container": "Default",
                                 "full": "Full Width"
@@ -182,7 +172,6 @@
                             "label": "Nav Position",
                             "description": "",
                             "type": "select",
-                            "priority": "",
                             "choices": {
                                 "navbar-left": "Default",
                                 "navbar-right": "Right"
@@ -197,7 +186,6 @@
                             "label": "Layout",
                             "description": "",
                             "type": "select",
-                            "priority": "",
                             "choices": {
                                 "": "Default",
                                 "navbar-fixed-top": "Fixed Top",
@@ -235,8 +223,7 @@
                         "control": {
                             "label": "Background",
                             "description": "",
-                            "type": "color",
-                            "priority": ""
+                            "type": "color"
                         }
                     }
 
@@ -256,7 +243,6 @@
                             "label": "Layout",
                             "description": "",
                             "type": "select",
-                            "priority": "",
                             "choices": {
                                 "": "Default",
                                 "no-text": "Hide Text",
@@ -275,8 +261,7 @@
                         "control": {
                             "label": "Footer Text",
                             "description": "",
-                            "type": "text",
-                            "priority": ""
+                            "type": "text"
                         }
                     }
 
