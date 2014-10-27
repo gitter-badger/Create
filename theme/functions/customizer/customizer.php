@@ -25,7 +25,7 @@ class CreateCustomizer {
     }
 
     public function the_customizer() {
-        global $wp_content;
+        global $wp_customize;
         $creator = file_get_contents($this->creator);
         $panels = json_decode($creator, true);
         $prefix = 'create_';
@@ -65,7 +65,7 @@ class CreateCustomizer {
 
                     $control_id = $section_id . '_' . $setting;
                     $control = $data['control'];
-                    $this->create_control($control_id, $setting_id, $section_id, $wp_customize);
+                    $this->create_control($control_id, $data, $setting_id, $section_id, $wp_customize);
                 }
             }
         }
@@ -186,6 +186,7 @@ class CreateCustomizer {
                     )
                 );
                 break;
+        }
     }
 
     // public function add_sections() {
