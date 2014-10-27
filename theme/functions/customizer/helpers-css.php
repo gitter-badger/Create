@@ -139,8 +139,9 @@ class CSSMaker {
         $mods = get_theme_mods();
         $creator = file_get_contents($this->creator);
         $panels = json_decode($creator);
-
+        var_dump($mods);
         foreach ($mods as $mod => $data) {
+
             $name = explode('_', $mod);
             $name_setting = explode('-', trim($name[2]));
             $name_setting_slice = array_slice($name_setting, 1);
@@ -161,6 +162,7 @@ class CSSMaker {
                     )
                 ));
             }
+
         }
     }
 

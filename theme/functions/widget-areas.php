@@ -5,6 +5,7 @@
  *
  * @link http://codex.wordpress.org/Function_Reference/register_sidebar
  */
+
 function create_widgets_init() {
 
 	register_sidebar(array(
@@ -55,6 +56,6 @@ function create_widgets_init() {
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h1 class="widget-title">',
 		'after_title'   => '</h1>',
-	) );
+	));
 }
 add_action( 'widgets_init', 'create_widgets_init' );

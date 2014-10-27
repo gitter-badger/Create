@@ -12,7 +12,7 @@ class CreateCustomizer {
         $this->path = get_template_directory() . '/functions/customizer/';
         $this->creator = $this->path . 'creator.json';
 
-        require_once($path . 'helpers-css.php');
+        require_once($this->path . 'helpers-css.php');
         $this->css_maker = new CSSMaker;
         add_action('create_css', array($this->css_maker, 'add_rules'));
 
@@ -25,7 +25,7 @@ class CreateCustomizer {
     }
 
     public function the_customizer() {
-        global $wp_content;
+        global $wp_customize;
         $creator = file_get_contents($this->creator);
         $panels = json_decode($creator, true);
         $prefix = 'create_';
@@ -53,7 +53,7 @@ class CreateCustomizer {
                     $setting_id = $section_id . '-' . $setting;
 
                     $transport = 'refresh';
-                    if($data['transport']) {
+                    if(array_key_exists('transport', $data)) {
                         $transport = $data['transport'];
                     }
 
@@ -65,16 +65,16 @@ class CreateCustomizer {
 
                     $control_id = $section_id . '_' . $setting;
                     $control = $data['control'];
-                    $this->create_control($control_id, $setting_id, $section_id, $wp_customize);
+                    $this->create_control($control_id, $control, $setting_id, $section_id, $wp_customize);
                 }
             }
         }
     }
 
-    public function cleanup($wp_customize) {
-        $wp_customize->get_panel('widgets')->priority = 5.70;
-        $wp_customize->get_panel('widgets')->title = __("Sidebars & Widgets", 'create');
-    }
+    // public function cleanup($wp_customize) {
+    //     $wp_customize->get_panel('widgets')->priority = 5.70;
+    //     $wp_customize->get_panel('widgets')->title = __("Sidebars & Widgets", 'create');
+    // }
 
     public function create_control($id, $data, $setting, $section, $wp_customize) {
         require_once('controls.php');
@@ -186,39 +186,8 @@ class CreateCustomizer {
                     )
                 );
                 break;
+        }
     }
-
-    // public function add_sections() {
-    //     global $wp_customize;
-    //     $sections = $this->sections;
-
-    //     foreach($sections as $section => $data) {
-    //         $file = trailingslashit($data['path']) . $section . '.php';
-    //         if(file_exists($file)) {
-    //             require_once($file);
-    //             $section_callback = 'create_customizer_' . $section;
-    //             if(function_exists($section_callback)) {
-    //                 $section_id = 'create_' . $section;
-    //                 $wp_customize->add_section(
-    //                     $section_id,
-    //                     array(
-    //                         'title' => $data['title'],
-    //                         'priority' => $data['priority'],
-    //                         'panel' => $data['panel']
-    //                     )
-    //                 );
-
-    //                 call_user_func_array($section_callback, array($wp_customize, $section_id));
-    //             }
-    //         }
-    //     }
-
-    //     $wp_customize->get_section('title_tagline')->panel = 'general';
-    //     $wp_customize->get_section('background_image')->panel = 'general';
-    //     $wp_customize->get_section('static_front_page')->panel = 'general';
-    //     $wp_customize->get_section('nav')->panel = 'header';
-    //     $wp_customize->remove_section('colors');
-    // }
 
     public function display_css() {
         do_action('create_css');
@@ -277,5 +246,3 @@ class CreateCustomizer {
 
 }
 endif;
-
-new CreateCustomizer;

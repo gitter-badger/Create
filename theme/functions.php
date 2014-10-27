@@ -27,7 +27,12 @@ require get_template_directory() . '/functions/jetpack.php';
 require get_template_directory() . '/functions/walker.php';
 
 // WP Customizer setup
-require get_template_directory() . '/functions/customizer/customizer.php';
+// require get_template_directory() . '/functions/customizer/customizer.php';
+// new CreateCustomizer;
+
+// WP Meta Boxes
+require get_template_directory() . '/functions/blox/blox.php';
+new Blox;
 
 function create_body_container() {
     echo 'container';
