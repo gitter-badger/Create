@@ -138,9 +138,7 @@ class CSSMaker {
     public function add_rules() {
         $mods = get_theme_mods();
         $creator = file_get_contents($this->creator);
-        $panels = json_decode($creator);
-        var_dump($panels);
-        var_dump($mods);
+        $panels = json_decode($creator, true);
 
         foreach ($mods as $mod => $data) {
 
