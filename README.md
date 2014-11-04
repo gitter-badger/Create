@@ -1,5 +1,6 @@
 Create
 ======
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/FolsomCreative/Create?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Create is version 1 of the thecreate framework and is intended to be an R&amp;D platform for creating WordPress themes.
 
